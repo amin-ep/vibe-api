@@ -2,6 +2,8 @@ import { Router } from 'express';
 import Protect from '../../../core/middlewares/protection.js';
 import UserController from '../controllers/user.controller.js';
 import checkID from '../../../core/middlewares/checkId.js';
+import validate from '../../../core/middlewares/validate.js';
+import { validateUpdateMe } from '../validators/user.validators.js';
 
 const router = Router();
 
@@ -14,6 +16,8 @@ router
   .route('/')
   .post(restrictTo('owner'), user.createDocument)
   .get(restrictTo('admin', 'owner'), user.getAllDocuments);
+
+router.patch('/updateMe', validate(validateUpdateMe), user.updateMe);
 
 router.param('id', checkID);
 

@@ -1,29 +1,10 @@
 import z from 'zod';
-
-const stringSchema = (fieldName: string, min: number, max: number) =>
-  z
-    .string({
-      required_error: `${fieldName} is required`,
-      invalid_type_error: `${fieldName} should be a string value`,
-    })
-    .min(min, {
-      message: `${fieldName} should be at least ${min} characters`,
-    })
-    .max(max, {
-      message: `${fieldName} should be ${max} or less characters`,
-    });
+import { email, stringSchema } from '.';
 
 const firstName = stringSchema('First name', 2, 30);
 const lastName = stringSchema('Last name', 2, 30);
 const username = stringSchema('Username', 4, 30);
-const email = z
-  .string({
-    required_error: 'Email is required',
-    invalid_type_error: 'Email should be a string value',
-  })
-  .email({
-    message: 'Please provide a valid email address',
-  });
+
 const password = stringSchema('Password', 6, 14);
 const verificationCode = stringSchema('Verification Code', 6, 6);
 
