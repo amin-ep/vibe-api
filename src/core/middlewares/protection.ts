@@ -61,10 +61,20 @@ class ProtectMiddlewares {
     };
   }
 
-  public protectCurrentUser(req: Request, res: Response, next: NextFunction) {
-    if (req?.user?._id === req.params.id) {
-      return next(new Forbidden('You cannot delete your account'));
+  public async protectUser(req: Request, _res: Response, next: NextFunction) {
+    const targetUser = await User.findById(req.params.id);
+
+    if (targetUser?.role === 'owner') {
+      return next(
+        new Forbidden('You cannot delete or update the owner account!')
+      );
     }
+    if (targetUser?._id === req.user._id) {
+      return next(
+        new Forbidden('You cannot delete or update your account on this route!')
+      );
+    }
+
     next();
   }
 }
