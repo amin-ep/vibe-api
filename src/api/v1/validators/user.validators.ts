@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { stringSchema } from '.';
+import { stringSchema } from './index.js';
 
 const firstName = stringSchema('First name', 2, 30);
 const lastName = stringSchema('Last name', 2, 30);

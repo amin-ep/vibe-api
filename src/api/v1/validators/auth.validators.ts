@@ -1,5 +1,5 @@
 import z from 'zod';
-import { email, stringSchema } from '.';
+import { email, stringSchema } from './index.js';
 
 const firstName = stringSchema('First name', 2, 30);
 const lastName = stringSchema('Last name', 2, 30);
@@ -18,7 +18,7 @@ const validateRegister = z.object({
 
 const validateLoginWithEmail = z.object(
   {
-    email,
+    email: email,
     password,
   },
   {
@@ -37,12 +37,12 @@ const validateLoginWithUsername = z.object(
 );
 
 const validateVerifyEmail = z.object({
-  email,
+  email: email,
   verificationCode,
 });
 
 const validateForgetPassword = z.object({
-  email,
+  email: email,
 });
 
 const validateResetPassword = z.object({
