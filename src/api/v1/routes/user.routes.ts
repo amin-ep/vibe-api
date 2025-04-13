@@ -3,7 +3,11 @@ import Protect from '../../../core/middlewares/protection.js';
 import UserController from '../controllers/user.controller.js';
 import checkID from '../../../core/middlewares/checkId.js';
 import validate from '../../../core/middlewares/validate.js';
-import { validateUpdateMe } from '../validators/user.validators.js';
+import {
+  validateUpdatePassword,
+  validateUpdateMe,
+  validateUpdateUser,
+} from '../validators/user.validators.js';
 
 const router = Router();
 
@@ -18,13 +22,23 @@ router
   .get(restrictTo('admin', 'owner'), user.getAllDocuments);
 
 router.patch('/updateMe', validate(validateUpdateMe), user.updateMe);
+router.patch(
+  '/updatePassword',
+  validate(validateUpdatePassword),
+  user.updateMyPassword
+);
 
 router.param('id', checkID);
 
 router
   .route('/:id')
   .get(restrictTo('admin', 'owner'), user.getDocumentById)
-  .patch(restrictTo('admin', 'owner'), protectUser, user.updateDocumentById)
+  .patch(
+    restrictTo('admin', 'owner'),
+    validate(validateUpdateUser),
+    protectUser,
+    user.updateDocumentById
+  )
   .delete(restrictTo('admin', 'owner'), protectUser, user.deleteDocumentById);
 
 export default router;

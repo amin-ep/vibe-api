@@ -64,14 +64,19 @@ class ProtectMiddlewares {
   public async protectUser(req: Request, _res: Response, next: NextFunction) {
     const targetUser = await User.findById(req.params.id);
 
+    if (targetUser?._id.toString() === req.user._id.toString()) {
+      return next(
+        new Forbidden('You cannot delete or update your account on this route!')
+      );
+    }
+
+    if (req.method === 'PATCH' && req.body.role && req.body.role === 'owner') {
+      return next(new Forbidden('Cannot have more than one owner!'));
+    }
+
     if (targetUser?.role === 'owner') {
       return next(
         new Forbidden('You cannot delete or update the owner account!')
-      );
-    }
-    if (targetUser?._id === req.user._id) {
-      return next(
-        new Forbidden('You cannot delete or update your account on this route!')
       );
     }
 
