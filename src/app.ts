@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import authRoutesV1 from './api/v1/routes/auth.routes.js';
 import userRouterV1 from './api/v1/routes/user.routes.js';
+import artistRouterV1 from './api/v1/routes/artist.routes.js';
+import musicRouterV1 from './api/v1/routes/music.routes.js';
 import { NotFound } from './core/utils/appError.js';
 import globalErrorHandler from './core/utils/errorHandler.js';
 
@@ -14,8 +16,12 @@ declare module 'express-serve-static-core' {
 
 app.use(express.json());
 
+app.use('/static', express.static('uploads'));
+
 app.use('/api/v1/auth', authRoutesV1);
 app.use('/api/v1/user', userRouterV1);
+app.use('/api/v1/artist', artistRouterV1);
+app.use('/api/v1/music', musicRouterV1);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   return next(
