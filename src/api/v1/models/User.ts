@@ -127,15 +127,35 @@ userSchema.methods.verifyPassword = function (candidatePassword: string) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-userSchema.methods.verifyInputVerificationCode = function (
+userSchema.methods.verifyInputVerificationCode = async function (
   variation: Variation,
   inputCode: string
 ) {
-  if (variation === 'auth')
-    return bcrypt.compare(inputCode, this.verificationCode);
+  const currentTime = Date.now();
+  const codeExpiryTime = new Date(
+    this.verificationCodeExpiryDate as string
+  ).getTime();
+  const expired = currentTime > codeExpiryTime;
 
-  if (variation === 'updateEmail')
-    return bcrypt.compare(inputCode, this.updateEmailVerificationCode);
+  let targetCode: string | null = null;
+
+  if (variation === 'auth') {
+    targetCode = this.verificationCode;
+  } else if (variation === 'updateEmail') {
+    targetCode = this.verificationCodeExpiryDate;
+  }
+  console.log(expired);
+
+  return (await bcrypt.compare(inputCode, targetCode as string)) && !expired;
+
+  // if (variation === 'auth')
+  //   return (await bcrypt.compare(inputCode, this.verificationCode)) && !expired;
+
+  // if (variation === 'updateEmail')
+  //   return (
+  //     (await bcrypt.compare(inputCode, this.verificationCodeExpiryDate)) &&
+  //     !expired
+  //   );
 };
 
 userSchema.methods.generateRecoverId = async function () {

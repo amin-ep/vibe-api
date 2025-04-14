@@ -99,14 +99,8 @@ export default class UserController extends Factory<IUser> {
       if (!user) {
         return next(new NotFound('There is no user with this id'));
       }
-      const currentTime = Date.now();
-      const codeExpiryTime = new Date(
-        user.verificationCodeExpiryDate as string
-      ).getTime();
-      const expired = currentTime > codeExpiryTime;
 
       if (
-        expired ||
         !(await user.verifyInputVerificationCode(
           'updateEmail',
           req.body.verificationCode

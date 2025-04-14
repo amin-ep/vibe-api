@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import AppError, { NotFound, Unauthorized } from './appError.js';
+import AppError, { BadRequest, NotFound, Unauthorized } from './appError.js';
 
 const sendDevelopmentError = (err: AppError, res: Response) => {
   res.status(err.statusCode).json({
@@ -25,6 +25,7 @@ const sendProductionError = (err: AppError, res: Response) => {
 };
 
 const handleCastError = (err: AppError) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   const message = `Invalid Id: ${err.value}`;
   return new NotFound(message);
@@ -42,16 +43,21 @@ const handleLargePayloadError = (err: AppError) => {
   return new AppError(err.message, 413);
 };
 
-// const handleDuplicateKeyError = (err: AppError & {errmsg: }, req: Request) => {
-//   const values = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-//   const message = `Duplicate field: ${values}. please use another value!`;
-//   return new BadRequest(message);
-// };
-
+const handleDuplicateKeyError = (
+  err: AppError & { keyValue?: Record<string, string>; message?: string },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _req: Request
+) => {
+  const duplicateField = err.keyValue ? Object.keys(err.keyValue)[0] : 'field';
+  const value = err.keyValue ? err.keyValue[duplicateField] : '';
+  const message = `Duplicate field: ${duplicateField} (${value}). Please use another value!`;
+  return new BadRequest(message);
+};
 export default function (
   err: AppError & { code?: number },
   req: Request,
   res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
 ) {
   err.status = err.status || 'error';
@@ -64,7 +70,7 @@ export default function (
     if (err.name === 'TokenExpiredError') err = handleTokenExpiredError();
     if (err.name === 'JsonWebTokenError') err = handleJWTError();
     if (err.statusCode === 413) err = handleLargePayloadError(err);
-    // if (err.code === 11000) err = handleDuplicateKeyError(err, req);
+    if (err.code === 11000) err = handleDuplicateKeyError(err, req);
     sendProductionError(err, res);
   }
 }

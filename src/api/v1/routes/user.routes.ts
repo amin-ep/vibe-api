@@ -29,6 +29,7 @@ router.patch(
   validate(validateUpdatePassword),
   user.updateMyPassword
 );
+
 router.post('/updateEmail', validate(validateUpdateEmail), user.updateEmail);
 router.patch(
   '/updateEmailVerify',

@@ -102,14 +102,7 @@ export default class AuthController {
         return next(new NotFound('There is no user with this email!'));
       }
 
-      const currentTime = Date.now();
-      const codeExpiryTime = new Date(
-        user.verificationCodeExpiryDate as string
-      ).getTime();
-      const expired = currentTime > codeExpiryTime;
-
       if (
-        expired ||
         !(await user.verifyInputVerificationCode(
           'auth',
           req.body.verificationCode
