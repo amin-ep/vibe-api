@@ -54,8 +54,9 @@ export default class AuthController {
           // user exists but not active
           existingUser.active = true;
           existingUser.verified = false;
-          const verificationCode =
-            await existingUser.generateVerificationCode();
+          const verificationCode = await existingUser.generateVerificationCode(
+            'auth'
+          );
           await existingUser.save({ validateBeforeSave: false });
 
           emailSender(
@@ -74,7 +75,7 @@ export default class AuthController {
       } else {
         // user does not exists
         const newUser = await User.create(req.body);
-        const verificationCode = await newUser.generateVerificationCode();
+        const verificationCode = await newUser.generateVerificationCode('auth');
         await newUser.save({ validateBeforeSave: false });
 
         emailSender(
@@ -109,7 +110,10 @@ export default class AuthController {
 
       if (
         expired ||
-        !(await user.verifyInputVerificationCode(req.body.verificationCode))
+        !(await user.verifyInputVerificationCode(
+          'auth',
+          req.body.verificationCode
+        ))
       ) {
         return next(new Unauthorized('Invalid or expired code'));
       }

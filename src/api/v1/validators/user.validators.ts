@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { stringSchema } from './index.js';
+import { email, stringSchema, verificationCode } from './index.js';
 
 const firstName = stringSchema('First name', 2, 30);
 const lastName = stringSchema('Last name', 2, 30);
@@ -28,4 +28,18 @@ const validateUpdateUser = z.object({
   active: active.optional(),
 });
 
-export { validateUpdateMe, validateUpdatePassword, validateUpdateUser };
+const validateUpdateEmail = z.object({
+  candidateEmail: email,
+});
+
+const validateUpdateEmailVerify = z.object({
+  verificationCode: verificationCode,
+});
+
+export {
+  validateUpdateMe,
+  validateUpdatePassword,
+  validateUpdateUser,
+  validateUpdateEmail,
+  validateUpdateEmailVerify,
+};

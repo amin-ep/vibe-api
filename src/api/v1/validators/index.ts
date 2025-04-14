@@ -21,3 +21,5 @@ export const email = z
   .email({
     message: 'Please provide a valid email address',
   });
+
+export const verificationCode = stringSchema('Verification Code', 6, 6);

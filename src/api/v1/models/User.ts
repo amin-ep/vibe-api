@@ -1,6 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import moment from 'moment';
+import mongoose, { Schema } from 'mongoose';
 import { v4 as uuid } from 'uuid';
 
 const userSchema = new Schema<IUser>(
@@ -48,6 +48,11 @@ const userSchema = new Schema<IUser>(
 
     passwordChangedAt: Date,
     passwordRecoverId: String,
+
+    updateEmailVerificationCode: String,
+    updateEmailVerificationCodeExpiryDate: Date,
+    emailChangedAt: Date,
+    candidateEmail: String,
   },
   {
     versionKey: false,
@@ -61,14 +66,30 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.generateVerificationCode = async function () {
-  const num: number = Math.floor(
+userSchema.methods.generateVerificationCode = async function (
+  variation: 'auth' | 'updateEmail'
+) {
+  const num: string = Math.floor(
     Math.random() * (999999 - 100000 + 1) + 100000
-  );
-  this.verificationCode = num.toString();
-  this.verificationCodeExpiryDate = moment(new Date()).add(30, 'minutes');
+  ).toString();
+  const expires = moment(new Date()).add(30, 'minutes');
 
-  return this.verificationCode;
+  switch (variation) {
+    case 'auth': {
+      this.verificationCode = num;
+      this.verificationCodeExpiryDate = expires;
+      return this.verificationCode;
+    }
+
+    case 'updateEmail': {
+      this.updateEmailVerificationCode = num;
+      this.updateEmailVerificationCodeExpiryDate = expires;
+      return this.updateEmailVerificationCode;
+    }
+
+    default:
+      throw new Error('Unknown variation');
+  }
 };
 
 userSchema.pre('save', async function (next) {
@@ -76,6 +97,18 @@ userSchema.pre('save', async function (next) {
 
   if (this.verificationCode)
     this.verificationCode = await bcrypt.hash(this.verificationCode, 10);
+
+  next();
+});
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('updateEmailVerificationCode')) return next();
+
+  if (this.updateEmailVerificationCode)
+    this.updateEmailVerificationCode = await bcrypt.hash(
+      this.updateEmailVerificationCode,
+      10
+    );
 
   next();
 });
@@ -94,8 +127,15 @@ userSchema.methods.verifyPassword = function (candidatePassword: string) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-userSchema.methods.verifyInputVerificationCode = function (inputCode: string) {
-  return bcrypt.compare(inputCode, this.verificationCode);
+userSchema.methods.verifyInputVerificationCode = function (
+  variation: Variation,
+  inputCode: string
+) {
+  if (variation === 'auth')
+    return bcrypt.compare(inputCode, this.verificationCode);
+
+  if (variation === 'updateEmail')
+    return bcrypt.compare(inputCode, this.updateEmailVerificationCode);
 };
 
 userSchema.methods.generateRecoverId = async function () {

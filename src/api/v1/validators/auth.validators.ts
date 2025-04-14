@@ -1,12 +1,12 @@
 import z from 'zod';
-import { email, stringSchema } from './index.js';
+import { email, stringSchema, verificationCode } from './index.js';
 
 const firstName = stringSchema('First name', 2, 30);
 const lastName = stringSchema('Last name', 2, 30);
 const username = stringSchema('Username', 4, 30);
 
 const password = stringSchema('Password', 6, 14);
-const verificationCode = stringSchema('Verification Code', 6, 6);
+// const verificationCode = stringSchema('Verification Code', 6, 6);
 
 const validateRegister = z.object({
   firstName: firstName.optional(),

@@ -1,3 +1,5 @@
+type Variation = 'auth' | 'updateEmail';
+
 interface IUser extends Document {
   _id: string;
   firstName: string;
@@ -15,12 +17,18 @@ interface IUser extends Document {
   verified: boolean;
   verificationCode?: string;
   verificationCodeExpiryDate?: Date | string;
-  verifyInputVerificationCode: (inputCode: string) => boolean;
-  generateVerificationCode: () => string;
+  verifyInputVerificationCode: (
+    variation: Variation,
+    inputCode: string
+  ) => boolean;
+  generateVerificationCode: (variation: Variation) => string;
+  candidateEmail?: string;
+  updateEmailVerificationCode?: string;
+  updateEmailVerificationCodeExpiryDate?: Date | string;
+  emailChangedAt?: Date;
 
   generateRecoverId: () => string;
   passwordRecoverId?: string;
   passwordChangedAt?: Date | string;
-
   checkPasswordChangedTime: (inputTime: number) => boolean;
 }

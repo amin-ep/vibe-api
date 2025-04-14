@@ -7,6 +7,8 @@ import {
   validateUpdatePassword,
   validateUpdateMe,
   validateUpdateUser,
+  validateUpdateEmail,
+  validateUpdateEmailVerify,
 } from '../validators/user.validators.js';
 
 const router = Router();
@@ -26,6 +28,12 @@ router.patch(
   '/updatePassword',
   validate(validateUpdatePassword),
   user.updateMyPassword
+);
+router.post('/updateEmail', validate(validateUpdateEmail), user.updateEmail);
+router.patch(
+  '/updateEmailVerify',
+  validate(validateUpdateEmailVerify),
+  user.updateEmailVerify
 );
 
 router.param('id', checkID);
