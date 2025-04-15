@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { stringSchema } from './index.js';
-import { genresArr, categoriesArr } from '../../../core/utils/constants.js';
+import { categories, stringSchema } from './index.js';
+import { genresArr } from '../../../core/utils/constants.js';
 
 const name = stringSchema('name', 2, 35);
 
@@ -27,8 +27,6 @@ const releaseYear = z.number({
   required_error: 'Music release year is required',
   invalid_type_error: 'Release year should be a number value',
 });
-
-const categories = z.array(z.enum(categoriesArr));
 
 const genre = z.enum(genresArr);
 

@@ -36,5 +36,6 @@ const uploadMusicFiles = multer({
 ]);
 
 const uploadArtistImage = uploadFile.single('imageUrl');
+const uploadAlbumCoverImage = uploadFile.single('coverImageUrl');
 
-export { uploadMusicFiles, uploadArtistImage };
+export { uploadMusicFiles, uploadArtistImage, uploadAlbumCoverImage };

@@ -30,4 +30,20 @@ const setArtistImageOnBody = (
   next();
 };
 
-export { setMusicFilesOnBody, setArtistImageOnBody };
+const setAlbumCoverImageUrlOnBody = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.file) {
+    if (!req.body.coverImageUrl) req.body.coverImageUrl = req.file.filename;
+  }
+
+  next();
+};
+
+export {
+  setMusicFilesOnBody,
+  setArtistImageOnBody,
+  setAlbumCoverImageUrlOnBody,
+};

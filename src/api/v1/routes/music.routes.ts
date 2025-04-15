@@ -9,6 +9,7 @@ import {
   validateUpdateMusic,
 } from '../validators/music.validator.js';
 import { uploadMusicFiles } from '../../../core/utils/upload.js';
+import convertReleaseYearToNumber from '../../../core/middlewares/ChangeReleaseYearTypeOnBody.js';
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router
     restrictTo('admin', 'owner'),
     uploadMusicFiles,
     setMusicFilesOnBody,
-    music.convertReleaseYearToNumber,
+    convertReleaseYearToNumber,
     validate(validateCreateMusic),
     music.createDocument
   );
@@ -38,7 +39,7 @@ router
     restrictTo('admin', 'owner'),
     uploadMusicFiles,
     setMusicFilesOnBody,
-    music.convertReleaseYearToNumber,
+    convertReleaseYearToNumber,
     validate(validateUpdateMusic),
     music.updateDocumentById
   )

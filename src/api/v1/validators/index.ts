@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { categoriesArr } from '../../../core/utils/constants.js';
 
 export const stringSchema = (fieldName: string, min: number, max: number) =>
   z
@@ -23,3 +24,5 @@ export const email = z
   });
 
 export const verificationCode = stringSchema('Verification Code', 6, 6);
+
+export const categories = z.array(z.enum(categoriesArr));
