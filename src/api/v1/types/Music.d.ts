@@ -13,4 +13,10 @@ interface IMusic extends Document {
 
   categories: string[];
   genre: string;
+
+  likes: {
+    _id: Types.ObjectId;
+    music: Types.ObjectId;
+    user: Types.ObjectId;
+  }[];
 }

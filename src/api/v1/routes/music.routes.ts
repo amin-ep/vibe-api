@@ -10,6 +10,7 @@ import {
 } from '../validators/music.validator.js';
 import { uploadMusicFiles } from '../../../core/utils/upload.js';
 import convertReleaseYearToNumber from '../../../core/middlewares/ChangeReleaseYearTypeOnBody.js';
+import likeRouter from './like.routes.js';
 
 const router = Router();
 
@@ -30,6 +31,8 @@ router
   );
 
 router.param('id', checkID);
+
+router.use('/:musicId/like', likeRouter);
 
 router
   .route('/:id')

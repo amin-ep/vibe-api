@@ -26,13 +26,29 @@ const musicSchema = new Schema<IMusic>(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+musicSchema.virtual('likes', {
+  ref: 'Like',
+  foreignField: 'music',
+  localField: '_id',
+});
 
 musicSchema.pre(/^find/, function (this: Query<IMusic[], IMusic>, next) {
   this.populate({
     path: 'artist',
     select: 'name',
+  });
+  next();
+});
+
+musicSchema.pre('findOne', function (next) {
+  this.populate({
+    path: 'likes',
+    select: '_id user',
   });
   next();
 });
