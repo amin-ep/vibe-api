@@ -5,7 +5,7 @@ const setMusicFilesOnBody = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.files) {
+  if (req.files && Object.entries(req.files).length > 0) {
     const fields = ['audioFileUrl', 'coverImageUrl'];
 
     fields.forEach(field => {

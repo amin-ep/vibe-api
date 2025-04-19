@@ -9,6 +9,7 @@ import {
 } from '../validators/artist.validator.js';
 import { setArtistImageOnBody } from '../../../core/middlewares/setFile.js';
 import { uploadArtistImage } from '../../../core/utils/upload.js';
+import albumRouter from './album.routes.js';
 
 const router = Router();
 
@@ -29,6 +30,7 @@ router
   );
 
 router.param('id', checkID);
+router.use('/:artistId/album', albumRouter);
 
 router
   .route('/:id')

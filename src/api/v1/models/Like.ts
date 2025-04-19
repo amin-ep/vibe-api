@@ -11,4 +11,13 @@ const likeSchema = new Schema<ILike>(
   }
 );
 
+likeSchema.pre('find', function (next) {
+  this.populate({
+    path: 'music',
+    select:
+      'name audioFileUrl coverImageUrl artist otherArtists releaseYear genre',
+  });
+  next();
+});
+
 export default mongoose.model('Like', likeSchema);

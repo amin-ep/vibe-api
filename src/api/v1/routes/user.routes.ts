@@ -10,6 +10,7 @@ import {
   validateUpdateEmail,
   validateUpdateEmailVerify,
 } from '../validators/user.validators.js';
+import likeRouter from './like.routes.js';
 
 const router = Router();
 
@@ -36,6 +37,8 @@ router.patch(
   validate(validateUpdateEmailVerify),
   user.updateEmailVerify
 );
+
+router.use('/:userId/likedMusics', likeRouter);
 
 router.param('id', checkID);
 

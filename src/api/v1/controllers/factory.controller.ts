@@ -5,14 +5,16 @@ import catchAsync from '../../../core/utils/catchAsync.js';
 import { NotFound } from '../../../core/utils/appError.js';
 import ApiFeatures from '../../../core/utils/apiFeatures.js';
 
+type Filter = { user?: string; artist?: string };
+
 export default class Factory<T extends Document> {
   constructor(protected Model: MongooseModel<T>) {}
 
   getAllDocuments = catchAsync(async (req: Request, res: Response) => {
-    const filter = {};
+    const filter: Filter = {};
 
-    // @ts-ignore
-    if (req.params.movieId) filter.movie = req.params.movieId;
+    if (req.params.userId) filter.user = req.params.userId;
+    if (req.params.artistId) filter.artist = req.params.artistId;
     // @ts-ignore
     const features = new ApiFeatures(this.Model.find(filter), req.query)
       .filter()

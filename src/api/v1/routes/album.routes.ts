@@ -10,7 +10,7 @@ import ChangeReleaseYearTypeOnBody from '../../../core/middlewares/ChangeRelease
 import { uploadAlbumCoverImage } from '../../../core/utils/upload.js';
 import { setAlbumCoverImageUrlOnBody } from '../../../core/middlewares/setFile.js';
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 const album = new AlbumController();
 

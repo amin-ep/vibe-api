@@ -37,7 +37,7 @@ musicSchema.virtual('likes', {
   localField: '_id',
 });
 
-musicSchema.pre(/^find/, function (this: Query<IMusic[], IMusic>, next) {
+musicSchema.pre('find', function (this: Query<IMusic[], IMusic>, next) {
   this.populate({
     path: 'artist',
     select: 'name',
