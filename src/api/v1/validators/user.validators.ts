@@ -8,11 +8,13 @@ const role = z.enum(['admin', 'user'], {
   message: 'Invalid input role. role must be admin or user value',
 });
 const active = z.boolean();
+const imageUrl = z.string();
 
 const validateUpdateMe = z.object({
   firstName: firstName.optional(),
   lastName: lastName.optional(),
   username: username.optional(),
+  imageUrl: imageUrl.optional(),
 });
 
 const validateUpdatePassword = z.object({

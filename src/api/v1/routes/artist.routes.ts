@@ -8,7 +8,7 @@ import {
   validateUpdateArtist,
 } from '../validators/artist.validator.js';
 import { setArtistImageOnBody } from '../../../core/middlewares/setFile.js';
-import { uploadArtistImage } from '../../../core/utils/upload.js';
+import { uploadImageUrl } from '../../../core/utils/upload.js';
 import albumRouter from './album.routes.js';
 
 const router = Router();
@@ -23,7 +23,7 @@ router
   .post(
     protect,
     restrictTo('admin', 'owner'),
-    uploadArtistImage,
+    uploadImageUrl,
     setArtistImageOnBody,
     validate(validateCreateArtist),
     artist.createDocument
@@ -38,7 +38,7 @@ router
   .patch(
     protect,
     restrictTo('admin', 'owner'),
-    uploadArtistImage,
+    uploadImageUrl,
     setArtistImageOnBody,
     validate(validateUpdateArtist),
     artist.updateDocumentById

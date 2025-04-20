@@ -47,3 +47,14 @@ export {
   setArtistImageOnBody,
   setAlbumCoverImageUrlOnBody,
 };
+
+export const setUserImageUrlOnBody = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  if (req.file) {
+    if (!req.body.imageUrl) req.body.imageUrl = req.file.filename;
+  }
+  next();
+};

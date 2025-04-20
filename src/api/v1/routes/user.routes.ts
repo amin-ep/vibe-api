@@ -11,6 +11,8 @@ import {
   validateUpdateEmailVerify,
 } from '../validators/user.validators.js';
 import likeRouter from './like.routes.js';
+import { uploadImageUrl } from '../../../core/utils/upload.js';
+import { setUserImageUrlOnBody } from '../../../core/middlewares/setFile.js';
 
 const router = Router();
 
@@ -24,7 +26,13 @@ router
   .post(restrictTo('owner'), user.createDocument)
   .get(restrictTo('admin', 'owner'), user.getAllDocuments);
 
-router.patch('/updateMe', validate(validateUpdateMe), user.updateMe);
+router.patch(
+  '/updateMe',
+  uploadImageUrl,
+  setUserImageUrlOnBody,
+  validate(validateUpdateMe),
+  user.updateMe
+);
 router.patch(
   '/updatePassword',
   validate(validateUpdatePassword),

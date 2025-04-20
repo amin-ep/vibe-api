@@ -26,6 +26,9 @@ const userSchema = new Schema<IUser>(
       enum: ['admin', 'owner', 'user'],
       default: 'user',
     },
+    imageUrl: {
+      type: String,
+    },
     password: {
       type: String,
     },
