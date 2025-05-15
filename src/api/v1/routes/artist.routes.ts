@@ -19,7 +19,7 @@ const { protect, restrictTo } = new Protect();
 
 router
   .route('/')
-  .get(protect, restrictTo('admin', 'owner'), artist.getAllDocuments)
+  .get(artist.getAllDocuments)
   .post(
     protect,
     restrictTo('admin', 'owner'),

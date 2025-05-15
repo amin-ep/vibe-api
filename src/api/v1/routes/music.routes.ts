@@ -1,16 +1,19 @@
 import { Router } from 'express';
-import MusicController from '../controllers/music.controller.js';
+import convertReleaseYearToNumber from '../../../core/middlewares/ChangeReleaseYearTypeOnBody.js';
 import checkID from '../../../core/middlewares/checkId.js';
+import { deleteOtherArtists } from '../../../core/middlewares/deleteMiddlewares.js';
 import Protect from '../../../core/middlewares/protection.js';
 import { setMusicFilesOnBody } from '../../../core/middlewares/setFile.js';
 import validate from '../../../core/middlewares/validate.js';
+import { uploadMusicFiles } from '../../../core/utils/upload.js';
+import MusicController from '../controllers/music.controller.js';
+import Music from '../models/Music.js';
 import {
   validateCreateMusic,
   validateUpdateMusic,
 } from '../validators/music.validator.js';
-import { uploadMusicFiles } from '../../../core/utils/upload.js';
-import convertReleaseYearToNumber from '../../../core/middlewares/ChangeReleaseYearTypeOnBody.js';
 import likeRouter from './like.routes.js';
+import { IMusic } from '../types/Music.js';
 
 const router = Router();
 
@@ -43,6 +46,7 @@ router
     uploadMusicFiles,
     setMusicFilesOnBody,
     convertReleaseYearToNumber,
+    deleteOtherArtists<IMusic>(Music),
     validate(validateUpdateMusic),
     music.updateDocumentById
   )

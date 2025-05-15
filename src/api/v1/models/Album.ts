@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Query, Schema } from 'mongoose';
 import { IAlbum } from '../types/Album';
 
 const albumSchema = new Schema<IAlbum>(
@@ -24,5 +24,22 @@ const albumSchema = new Schema<IAlbum>(
   },
   { timestamps: true }
 );
+
+albumSchema.pre(/^find/, function (this: Query<IAlbum, IAlbum[]>, next) {
+  this.populate({
+    path: 'artist',
+    select: 'name',
+  })
+    .populate({
+      path: 'musics',
+      select:
+        'name audioFileUrl releaseYear coverImageUrl otherArtists categories genre likeQuantity',
+    })
+    .populate({
+      path: 'otherArtists',
+      select: 'name',
+    });
+  next();
+});
 
 export default mongoose.model('Album', albumSchema);

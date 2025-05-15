@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 const setMusicFilesOnBody = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   if (req.files && Object.entries(req.files).length > 0) {

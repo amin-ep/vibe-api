@@ -1,13 +1,11 @@
 import { z } from 'zod';
 import { categories, stringSchema } from './index.js';
 
-const name = stringSchema('Name', 2, 40);
-const coverImageUrl = z
-  .string({
-    required_error: 'Cover image URL is required.',
-    invalid_type_error: 'Cover image URL must be a string.',
-  })
-  .url('Cover image must be a valid URL.');
+const name = stringSchema('Name', 1, 40);
+const coverImageUrl = z.string({
+  required_error: 'Cover image is required',
+  invalid_type_error: 'Cover image should be a string value',
+});
 
 const releaseYear = z
   .number({

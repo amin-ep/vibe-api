@@ -7,6 +7,7 @@ import albumRouterV1 from './api/v1/routes/album.routes.js';
 import { NotFound } from './core/utils/appError.js';
 import globalErrorHandler from './core/utils/errorHandler.js';
 import playlistRouterV1 from './api/v1/routes/playlist.routes.js';
+import cors from 'cors';
 
 const app = express();
 
@@ -17,6 +18,8 @@ declare module 'express-serve-static-core' {
 }
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use('/static', express.static('uploads'));
 

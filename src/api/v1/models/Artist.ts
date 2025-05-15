@@ -17,12 +17,20 @@ artistSchema.virtual('musics', {
   foreignField: 'artist',
   localField: '_id',
 });
+artistSchema.virtual('albums', {
+  ref: 'Album',
+  foreignField: 'artist',
+  localField: '_id',
+});
 
 artistSchema.pre('findOne', function (this: Query<IArtist[], IArtist>, next) {
   this.populate({
     path: 'musics',
     select:
       'name audioFileUrl coverImageUrl otherArtists releaseYear categories genre',
+  }).populate({
+    path: 'albums',
+    select: 'name coverImageUrl',
   });
   next();
 });

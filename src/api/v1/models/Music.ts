@@ -37,11 +37,28 @@ musicSchema.virtual('likes', {
   localField: '_id',
 });
 
+musicSchema.virtual('likeQuantity').get(function () {
+  if (this.likes) {
+    return this.likes.length;
+  } else {
+    return 0;
+  }
+});
+
 musicSchema.pre('find', function (this: Query<IMusic[], IMusic>, next) {
   this.populate({
     path: 'artist',
     select: 'name',
-  });
+  })
+    .populate({
+      path: 'otherArtists',
+      select: 'name',
+    })
+    .populate({
+      path: 'likes',
+      select: '_id user',
+    });
+
   next();
 });
 
@@ -49,7 +66,15 @@ musicSchema.pre('findOne', function (next) {
   this.populate({
     path: 'likes',
     select: '_id user',
-  });
+  })
+    .populate({
+      path: 'artist',
+      select: 'name',
+    })
+    .populate({
+      path: 'otherArtists',
+      select: 'name',
+    });
   next();
 });
 

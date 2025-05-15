@@ -48,8 +48,9 @@ router.patch(
 
 router.use('/:userId/likedMusics', likeRouter);
 
-router.param('id', checkID);
+router.get('/me', user.getMe, user.getDocumentById);
 
+router.param('id', checkID);
 router
   .route('/:id')
   .get(restrictTo('admin', 'owner'), user.getDocumentById)

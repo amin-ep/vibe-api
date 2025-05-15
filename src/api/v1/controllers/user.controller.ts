@@ -34,6 +34,11 @@ export default class UserController extends Factory<IUser> {
     }
   );
 
+  getMe = (req: Request, res: Response, next: NextFunction) => {
+    req.params.id = req.user._id as string;
+    next();
+  };
+
   updateMyPassword = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       const user = await User.findById(req.user._id);
