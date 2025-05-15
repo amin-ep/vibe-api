@@ -33,6 +33,13 @@ router
     music.createDocument
   );
 
+router.get(
+  '/stats',
+  protect,
+  restrictTo('admin', 'owner'),
+  music.getMusicStats
+);
+
 router.param('id', checkID);
 
 router.use('/:musicId/like', likeRouter);
