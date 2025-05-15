@@ -16,7 +16,7 @@ router
   .post(
     protect,
     setUserOnBody,
-    like.setMusicOnBody,
+    like.setLikeModelOnBody,
     validate(validateToggleLike),
     like.toggleLike
   );

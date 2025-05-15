@@ -8,9 +8,14 @@ const user = z.object({
   user: z.custom<mongoose.Types.ObjectId>(),
 });
 
+const album = z.object({
+  album: z.custom<mongoose.Types.ObjectId>(),
+});
+
 const validateToggleLike = z.object({
-  music,
+  music: music.optional(),
   user,
+  album: album.optional(),
 });
 
 export { validateToggleLike };

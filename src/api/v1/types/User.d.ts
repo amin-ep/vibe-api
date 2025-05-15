@@ -2,7 +2,7 @@ type Variation = 'auth' | 'updateEmail';
 
 interface IUser extends Document {
   _id: string;
-  imageUrl?:string;
+  imageUrl?: string;
   firstName: string;
   lastName: string;
   email: string;

@@ -9,6 +9,8 @@ import {
 import ChangeReleaseYearTypeOnBody from '../../../core/middlewares/ChangeReleaseYearTypeOnBody.js';
 import { uploadAlbumCoverImage } from '../../../core/utils/upload.js';
 import { setAlbumCoverImageUrlOnBody } from '../../../core/middlewares/setFile.js';
+import likeRouter from './like.routes.js';
+import checkID from '../../../core/middlewares/checkId.js';
 
 const router = Router({ mergeParams: true });
 
@@ -28,6 +30,10 @@ router
     validate(validateCreateAlbum),
     album.createDocument
   );
+
+router.param('id', checkID);
+
+router.use('/:albumId/like', likeRouter);
 
 router
   .route('/:id')

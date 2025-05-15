@@ -25,6 +25,20 @@ const albumSchema = new Schema<IAlbum>(
   { timestamps: true }
 );
 
+albumSchema.virtual('likes', {
+  ref: 'Like',
+  foreignField: 'music',
+  localField: '_id',
+});
+
+albumSchema.virtual('likeQuantity').get(function () {
+  if (this.likes) {
+    return this.likes.length;
+  } else {
+    return 0;
+  }
+});
+
 albumSchema.pre(/^find/, function (this: Query<IAlbum, IAlbum[]>, next) {
   this.populate({
     path: 'artist',
@@ -38,6 +52,10 @@ albumSchema.pre(/^find/, function (this: Query<IAlbum, IAlbum[]>, next) {
     .populate({
       path: 'otherArtists',
       select: 'name',
+    })
+    .populate({
+      path: 'likes',
+      select: '_id user',
     });
   next();
 });

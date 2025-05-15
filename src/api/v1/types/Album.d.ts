@@ -9,4 +9,10 @@ interface IAlbum extends Document {
   artist: Types.ObjectId;
   otherArtists: Types.ObjectId[];
   categories: string[];
+
+  likes: {
+    _id: Types.ObjectId;
+    album: Types.ObjectId;
+    user: Types.ObjectId;
+  }[];
 }
