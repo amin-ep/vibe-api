@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-const setMusicFilesOnBody = (
+const setMusicFilesOnBody = async (
   req: Request,
   _res: Response,
   next: NextFunction
@@ -9,8 +9,9 @@ const setMusicFilesOnBody = (
     const fields = ['audioFileUrl', 'coverImageUrl'];
 
     fields.forEach(field => {
-      if (!req.body[field]) {
-        req.body[field] = (req.files as IRequestFiles)[field][0].filename;
+      const fileArray = (req.files as IRequestFiles)[field];
+      if (Array.isArray(fileArray) && fileArray[0] && !req.body[field]) {
+        req.body[field] = fileArray[0].filename;
       }
     });
   }

@@ -36,13 +36,20 @@ export default class LikeController extends Factory<ILike> {
         el => el.user.toString() == req.body.user.toString()
       );
 
-      console.log(isLiked);
+      console.log(targetModel.likes);
 
       if (isLiked) {
-        await Like.findOneAndDelete({
-          user: req.body.user,
-          music: req.body.music,
-        });
+        if (req.body.music) {
+          await Like.findOneAndDelete({
+            user: req.body.user,
+            music: req.body.music,
+          });
+        } else {
+          await Like.findOneAndDelete({
+            user: req.body.user,
+            album: req.body.album,
+          });
+        }
 
         res.status(200).json({
           status: 'success',

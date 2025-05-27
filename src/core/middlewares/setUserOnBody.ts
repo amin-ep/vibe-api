@@ -5,11 +5,7 @@ export default async function setUserOnBody(
   _res: Response,
   next: NextFunction
 ) {
-  console.log(req.body);
-
   if (!req.body.user) {
-    console.log(req.user);
-
     req.body.user = req.user._id;
   }
   next();

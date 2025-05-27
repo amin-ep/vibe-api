@@ -150,15 +150,6 @@ userSchema.methods.verifyInputVerificationCode = async function (
   console.log(expired);
 
   return (await bcrypt.compare(inputCode, targetCode as string)) && !expired;
-
-  // if (variation === 'auth')
-  //   return (await bcrypt.compare(inputCode, this.verificationCode)) && !expired;
-
-  // if (variation === 'updateEmail')
-  //   return (
-  //     (await bcrypt.compare(inputCode, this.verificationCodeExpiryDate)) &&
-  //     !expired
-  //   );
 };
 
 userSchema.methods.generateRecoverId = async function () {

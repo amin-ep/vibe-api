@@ -68,8 +68,6 @@ export default class MusicController extends Factory<IMusic> {
       },
     ]);
 
-    console.log(data);
-
     res.status(200).json({
       status: 'success',
       data: data[0],

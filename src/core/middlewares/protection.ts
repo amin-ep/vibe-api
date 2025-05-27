@@ -8,7 +8,7 @@ import User from '../../api/v1/models/User.js';
 class ProtectMiddlewares {
   public protect = catchAsync(
     async (req: Request, _res: Response, next: NextFunction) => {
-      let token: string = '';
+      let token: string | undefined;
 
       if (
         req.headers.authorization &&
@@ -64,17 +64,19 @@ class ProtectMiddlewares {
   public async protectUser(req: Request, _res: Response, next: NextFunction) {
     const targetUser = await User.findById(req.params.id);
 
-    if (targetUser?._id.toString() === req.user._id.toString()) {
+    if (!targetUser) {
+      return next(new NotFound(`Invalid id: ${req.params.id}`));
+    }
+
+    const targetUserRole = targetUser.role;
+
+    if (targetUser._id.toString() === req.user._id.toString()) {
       return next(
         new Forbidden('You cannot delete or update your account on this route!')
       );
     }
 
-    if (req.method === 'PATCH' && req.body.role && req.body.role === 'owner') {
-      return next(new Forbidden('Cannot have more than one owner!'));
-    }
-
-    if (targetUser?.role === 'owner') {
+    if (targetUserRole === 'owner') {
       return next(
         new Forbidden('You cannot delete or update the owner account!')
       );

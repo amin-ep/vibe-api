@@ -22,12 +22,12 @@ const albumSchema = new Schema<IAlbum>(
     otherArtists: [{ ref: 'Artist', type: Schema.Types.ObjectId }],
     categories: [String],
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 albumSchema.virtual('likes', {
   ref: 'Like',
-  foreignField: 'music',
+  foreignField: 'album',
   localField: '_id',
 });
 

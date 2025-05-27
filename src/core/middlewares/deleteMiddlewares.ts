@@ -7,7 +7,12 @@ export function deleteOtherArtists<T extends Document>(
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const inputData = req.body;
-    if (inputData && inputData.otherArtists.length === 0) {
+    console.log(req.body);
+    if (
+      inputData &&
+      inputData.otherArtists &&
+      inputData.otherArtists.length === 0
+    ) {
       const document = await Model.findById(req.params.id);
       if (document) {
         // @ts-ignore
