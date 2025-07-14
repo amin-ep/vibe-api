@@ -7,7 +7,6 @@ export function deleteOtherArtists<T extends Document>(
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const inputData = req.body;
-    console.log(req.body);
     if (
       inputData &&
       inputData.otherArtists &&

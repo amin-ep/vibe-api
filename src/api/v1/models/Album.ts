@@ -7,7 +7,7 @@ const albumSchema = new Schema<IAlbum>(
       type: String,
       index: true,
     },
-    artist: { ref: 'Artist', type: Schema.Types.ObjectId },
+    artists: [{ ref: 'Artist', type: Schema.Types.ObjectId }],
     releaseYear: {
       type: Number,
       index: true,
@@ -41,14 +41,10 @@ albumSchema.virtual('likeQuantity').get(function () {
 
 albumSchema.pre(/^find/, function (this: Query<IAlbum, IAlbum[]>, next) {
   this.populate({
-    path: 'artist',
-    select: 'name',
+    path: 'musics',
+    select:
+      'name audioFileUrl releaseYear coverImageUrl otherArtists categories genre likeQuantity',
   })
-    .populate({
-      path: 'musics',
-      select:
-        'name audioFileUrl releaseYear coverImageUrl otherArtists categories genre likeQuantity',
-    })
     .populate({
       path: 'otherArtists',
       select: 'name',
@@ -56,7 +52,12 @@ albumSchema.pre(/^find/, function (this: Query<IAlbum, IAlbum[]>, next) {
     .populate({
       path: 'likes',
       select: '_id user',
+    })
+    .populate({
+      path: 'artists',
+      select: 'name',
     });
+
   next();
 });
 

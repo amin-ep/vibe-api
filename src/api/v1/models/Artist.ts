@@ -14,12 +14,12 @@ const artistSchema = new Schema<IArtist>(
 
 artistSchema.virtual('musics', {
   ref: 'Music',
-  foreignField: 'artist',
+  foreignField: 'artists',
   localField: '_id',
 });
 artistSchema.virtual('albums', {
   ref: 'Album',
-  foreignField: 'artist',
+  foreignField: 'artists',
   localField: '_id',
 });
 

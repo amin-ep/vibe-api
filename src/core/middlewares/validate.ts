@@ -22,7 +22,7 @@ export default function validate(validator: ZodTypeAny) {
           );
         });
       }
-
+      console.log(err);
       if (err instanceof ZodError) {
         return next(new BadRequest(err.errors[0].message));
       }

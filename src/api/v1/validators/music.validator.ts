@@ -14,9 +14,8 @@ const coverImageUrl = z.string({
   invalid_type_error: 'Cover image should be a string value',
 });
 
-const artist = z.string({
-  required_error: 'Each music needs to have a artist',
-  invalid_type_error: 'Artist should be object id of artist',
+const artists = z.array(z.string(), {
+  invalid_type_error: 'Artists field should be an array of string',
 });
 
 const otherArtists = z.array(z.string(), {
@@ -34,7 +33,7 @@ const validateCreateMusic = z.object({
   name,
   audioFileUrl,
   coverImageUrl,
-  artist,
+  artists,
   otherArtists: otherArtists.optional(),
   releaseYear,
   categories,
@@ -45,7 +44,7 @@ const validateUpdateMusic = z.object({
   name: name.optional(),
   audioFileUrl: audioFileUrl.optional(),
   coverImageUrl: coverImageUrl.optional(),
-  artist: artist.optional(),
+  artists: artists.optional(),
   otherArtists: otherArtists.optional(),
   releaseYear: releaseYear.optional(),
   categories: categories.optional(),

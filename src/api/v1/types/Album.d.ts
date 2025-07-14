@@ -6,7 +6,7 @@ interface IAlbum extends Document {
   coverImageUrl: string;
   releaseYear: number;
   musics: Types.ObjectId[];
-  artist: Types.ObjectId;
+  artists: Types.ObjectId[];
   otherArtists: Types.ObjectId[];
   categories: string[];
 

@@ -6,7 +6,7 @@ interface IMusic extends Document {
   coverImageUrl: string;
   audioFileUrl: string;
 
-  artist: Types.ObjectId;
+  artists: Types.ObjectId[];
   otherArtists: Types.ObjectId[];
 
   releaseYear: number;

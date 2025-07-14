@@ -7,10 +7,12 @@ const musicSchema = new Schema<IMusic>(
     audioFileUrl: String,
     coverImageUrl: String,
 
-    artist: {
-      ref: 'Artist',
-      type: Schema.Types.ObjectId,
-    },
+    artists: [
+      {
+        ref: 'Artist',
+        type: Schema.Types.ObjectId,
+      },
+    ],
 
     otherArtists: [{ ref: 'Artist', type: Schema.Types.ObjectId }],
 
@@ -47,7 +49,7 @@ musicSchema.virtual('likeQuantity').get(function () {
 
 musicSchema.pre('find', function (this: Query<IMusic[], IMusic>, next) {
   this.populate({
-    path: 'artist',
+    path: 'artists',
     select: 'name',
   })
     .populate({
@@ -68,7 +70,7 @@ musicSchema.pre('findOne', function (next) {
     select: '_id user',
   })
     .populate({
-      path: 'artist',
+      path: 'artists',
       select: 'name',
     })
     .populate({

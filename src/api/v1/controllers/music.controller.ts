@@ -27,7 +27,7 @@ export default class MusicController extends Factory<IMusic> {
               $project: {
                 allArtists: {
                   $concatArrays: [
-                    [{ $ifNull: ['$artist', null] }],
+                    [{ $ifNull: ['$artists', null] }],
                     { $ifNull: ['$otherArtists', []] },
                   ],
                 },
@@ -51,13 +51,13 @@ export default class MusicController extends Factory<IMusic> {
                 as: 'artist',
               },
             },
-            { $unwind: '$artist' },
+            { $unwind: '$artists' },
 
             {
               $project: {
                 _id: 0,
                 artistId: '$_id',
-                name: '$artist.name',
+                name: '$artists.name',
                 count: 1,
               },
             },

@@ -25,12 +25,9 @@ const musics = z
   )
   .nonempty('At least one music must be included.');
 
-const artist = z
-  .string({
-    required_error: 'Artist name is required.',
-    invalid_type_error: 'Artist name must be a string.',
-  })
-  .min(1, "Artist name can't be empty.");
+const artists = z.array(z.string(), {
+  invalid_type_error: 'Artists field should be an array of string',
+});
 
 const otherArtists = z.array(
   z.string({
@@ -44,7 +41,7 @@ const validateCreateAlbum = z.object({
   coverImageUrl,
   releaseYear,
   musics,
-  artist,
+  artists,
   otherArtists: otherArtists.optional(),
   categories,
 });
@@ -54,7 +51,7 @@ const validateUpdateAlbum = z.object({
   coverImageUrl: coverImageUrl.optional(),
   releaseYear: releaseYear.optional(),
   musics: musics.optional(),
-  artist: artist.optional(),
+  artists: artists.optional(),
   categories: categories.optional(),
   otherArtists: otherArtists.optional(),
 });
