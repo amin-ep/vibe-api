@@ -27,6 +27,18 @@ const releaseYear = z.number({
   invalid_type_error: 'Release year should be a number value',
 });
 
+const relatedMusics = z
+  .array(z.string(), {
+    invalid_type_error: 'Related Musics field should be an array of string',
+    required_error: 'Each music needs some related musics',
+  })
+  .min(4, {
+    message: 'Each music has at least 4 related musics',
+  })
+  .max(20, {
+    message: 'Each music cannot have more than 20 related musics',
+  });
+
 const genre = z.enum(genresArr);
 
 const validateCreateMusic = z.object({
@@ -38,6 +50,7 @@ const validateCreateMusic = z.object({
   releaseYear,
   categories,
   genre,
+  relatedMusics,
 });
 
 const validateUpdateMusic = z.object({
@@ -48,6 +61,7 @@ const validateUpdateMusic = z.object({
   otherArtists: otherArtists.optional(),
   releaseYear: releaseYear.optional(),
   categories: categories.optional(),
+  relatedMusics: relatedMusics.optional(),
 });
 
 export { validateCreateMusic, validateUpdateMusic };

@@ -19,4 +19,5 @@ interface IMusic extends Document {
     music: Types.ObjectId;
     user: Types.ObjectId;
   }[];
+  relatedMusics: Types.ObjectId[];
 }

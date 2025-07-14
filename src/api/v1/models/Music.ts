@@ -25,6 +25,12 @@ const musicSchema = new Schema<IMusic>(
     genre: {
       type: String,
     },
+    relatedMusics: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Music',
+      },
+    ],
   },
   {
     timestamps: true,
@@ -77,6 +83,14 @@ musicSchema.pre('findOne', function (next) {
       path: 'otherArtists',
       select: 'name',
     });
+  next();
+});
+
+musicSchema.pre(/^find/, function (this: Query<IMusic[], IMusic>, next) {
+  this.populate({
+    path: 'relatedMusics',
+    select: 'name audioFileUrl coverImageUrl otherArtists artists',
+  });
   next();
 });
 
