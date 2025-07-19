@@ -5,4 +5,5 @@ interface IPlaylist extends Document {
   title: string;
   musics: Types.ObjectId[];
   user: Types.ObjectId;
+  isPublic: boolean;
 }
