@@ -54,10 +54,14 @@ export default class AuthController {
           // user exists but not active
           existingUser.active = true;
           existingUser.verified = false;
+          existingUser.firstName = req.body.firstName ?? undefined;
+          existingUser.lastName = req.body.lastName ?? undefined;
+          existingUser.username = req.body.username;
+
           const verificationCode = await existingUser.generateVerificationCode(
             'auth'
           );
-          await existingUser.save({ validateBeforeSave: false });
+          await existingUser.save({ validateBeforeSave: true });
 
           emailSender(
             res,
