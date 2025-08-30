@@ -192,7 +192,7 @@ export default class AuthController {
 
       const html = `
           <div>
-            <a href="http://localhost:3000/${recoverId}">Click</a>
+            <a href="http://localhost:3000/recover-password/${recoverId}">Click</a>
           </div>
           `;
 
