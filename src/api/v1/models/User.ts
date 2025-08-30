@@ -51,6 +51,7 @@ const userSchema = new Schema<IUser>(
 
     passwordChangedAt: Date,
     passwordRecoverId: String,
+    passwordRecoverIdExpiresAt: Date,
 
     updateEmailVerificationCode: String,
     updateEmailVerificationCodeExpiryDate: Date,
@@ -147,12 +148,13 @@ userSchema.methods.verifyInputVerificationCode = async function (
   } else if (variation === 'updateEmail') {
     targetCode = this.verificationCodeExpiryDate;
   }
-  console.log(expired);
 
   return (await bcrypt.compare(inputCode, targetCode as string)) && !expired;
 };
 
 userSchema.methods.generateRecoverId = async function () {
+  const expires = moment(new Date()).add(30, 'minutes');
+  this.passwordRecoverIdExpiresAt = expires;
   return (this.passwordRecoverId = uuid());
 };
 

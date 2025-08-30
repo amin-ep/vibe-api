@@ -30,6 +30,7 @@ interface IUser extends Document {
 
   generateRecoverId: () => string;
   passwordRecoverId?: string;
+  passwordRecoverIdExpiresAt: Date;
   passwordChangedAt?: Date | string;
   checkPasswordChangedTime: (inputTime: number) => boolean;
 }
