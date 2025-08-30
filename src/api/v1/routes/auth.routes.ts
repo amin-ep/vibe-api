@@ -21,10 +21,9 @@ router.post(
   auth.forgetPassword
 );
 
-router.patch(
-  '/recoverPassword/:recoverId',
-  validate(validateResetPassword),
-  auth.resetPassword
-);
+router
+  .route('/recoverPassword/:recoverId')
+  .get(auth.checkUserRecoverId)
+  .patch(validate(validateResetPassword), auth.resetPassword);
 
 export default router;

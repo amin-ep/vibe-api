@@ -253,4 +253,24 @@ export default class AuthController {
       }
     }
   );
+
+  checkUserRecoverId = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const user = await User.findOne({
+        passwordRecoverId: req.params.recoverId,
+      });
+
+      if (
+        !user ||
+        (user &&
+          new Date(user.passwordRecoverIdExpiresAt).getTime() < Date.now())
+      ) {
+        return next(new NotFound('Invalid or expired recover id'));
+      } else {
+        res.status(200).json({
+          status: 'success',
+        });
+      }
+    }
+  );
 }
