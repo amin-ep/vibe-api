@@ -231,4 +231,26 @@ export default class AuthController {
       });
     }
   );
+
+  resendVerifyEmailCode = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+        return next(new NotFound('Invalid email'));
+      } else {
+        const verificationCode = await user.generateVerificationCode('auth');
+        await user.save({ validateBeforeSave: false });
+        await emailSender(
+          res,
+          {
+            email: user.email,
+            html: `<div>${verificationCode}</div>`,
+            subject: 'Verifying email',
+            text: 'Do Not Reply',
+          },
+          200
+        );
+      }
+    }
+  );
 }
