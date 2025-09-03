@@ -45,7 +45,7 @@ export default class ApiFeatures {
   }
 
   limitFields() {
-    if (this.queryString.limit) {
+    if (this.queryString.fields) {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
     } else {
