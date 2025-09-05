@@ -5,8 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "tsc && nodemon dist/server.js",
-    "start": "tsc && NODE_ENV=production nodemon dist/server.js",
+    "dev": "tsc && node dist/server.js",
+    "start": "tsc && NODE_ENV=production node dist/server.js",
     "watch": "tsc && tsc -w",
     "build": "tsc"
   },
