@@ -118,6 +118,7 @@ export default class AuthController {
       user.verified = true;
       user.verificationCode = undefined;
       user.verificationCodeExpiryDate = undefined;
+      user.verifiedAt = new Date();
       await user.save({ validateBeforeSave: false });
       const token = this.generateToken(user._id);
 

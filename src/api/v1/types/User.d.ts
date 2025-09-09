@@ -22,6 +22,7 @@ interface IUser extends Document {
     variation: Variation,
     inputCode: string
   ) => boolean;
+  verifiedAt: Date;
   generateVerificationCode: (variation: Variation) => string;
   candidateEmail?: string;
   updateEmailVerificationCode?: string;

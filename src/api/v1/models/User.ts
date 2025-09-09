@@ -48,6 +48,7 @@ const userSchema = new Schema<IUser>(
     verificationCodeExpiryDate: {
       type: Date,
     },
+    verifiedAt: Date,
 
     passwordChangedAt: Date,
     passwordRecoverId: String,
