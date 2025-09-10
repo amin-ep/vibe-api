@@ -147,7 +147,7 @@ userSchema.methods.verifyInputVerificationCode = async function (
   if (variation === 'auth') {
     targetCode = this.verificationCode;
   } else if (variation === 'updateEmail') {
-    targetCode = this.verificationCodeExpiryDate;
+    targetCode = this.updateEmailVerificationCode;
   }
 
   return (await bcrypt.compare(inputCode, targetCode as string)) && !expired;
